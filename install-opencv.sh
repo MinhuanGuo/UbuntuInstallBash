@@ -6,7 +6,7 @@
 #                       SCRIPT OPTIONS                                 |
 # ---------------------------------------------------------------------|
 OPENCV_VERSION='4.2.0'       # Version to be installed
-OPENCV_CONTRIB='NO'          # Install OpenCV's extra modules (YES/NO)
+OPENCV_CONTRIB='YES'          # Install OpenCV's extra modules (YES/NO)
 # -------------------------------------------------------------------- |
 
 # |          THIS SCRIPT IS TESTED CORRECTLY ON          |
@@ -30,9 +30,9 @@ OPENCV_CONTRIB='NO'          # Install OpenCV's extra modules (YES/NO)
 # 1. KEEP UBUNTU OR DEBIAN UP TO DATE
 
 sudo apt-get -y update
-sudo apt-get -y upgrade       # Uncomment to install new versions of packages currently installed
-sudo apt-get -y dist-upgrade  # Uncomment to handle changing dependencies with new vers. of pack.
-sudo apt-get -y autoremove    # Uncomment to remove packages that are now no longer needed
+# sudo apt-get -y upgrade       # Uncomment to install new versions of packages currently installed
+# sudo apt-get -y dist-upgrade  # Uncomment to handle changing dependencies with new vers. of pack.
+# sudo apt-get -y autoremove    # Uncomment to remove packages that are now no longer needed
 
 
 # 2. INSTALL THE DEPENDENCIES
@@ -68,14 +68,16 @@ sudo apt-get install -y doxygen unzip wget
 
 # 3. INSTALL THE LIBRARY
 
-wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip
-unzip opencv.zip
-rm opencv.zip
+#wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip
+unzip opencv-${OPENCV_VERSION}.zip
+#rm opencv.zip
+mkdir -p ~/OpenCV
 mv opencv-${OPENCV_VERSION} ~/OpenCV
 
 if [ $OPENCV_CONTRIB = 'YES' ]; then
-  wget https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip
-  unzip ${OPENCV_VERSION}.zip && rm ${OPENCV_VERSION}.zip
+  #wget https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip
+  unzip opencv_control-${OPENCV_VERSION}.zip 
+  #rm opencv_control-${OPENCV_VERSION}.zip
   mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
   mv opencv_contrib ~/OpenCV
 fi
@@ -93,7 +95,7 @@ cmake -DWITH_QT=ON -DWITH_OPENGL=ON -DFORCE_VTK=ON -DWITH_TBB=ON -DWITH_GDAL=ON 
       -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ..
 fi
 
-make -j12
+sudo make -j12
 sudo make install
 sudo ldconfig
 
